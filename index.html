@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salih Efe Fidan ile Date Programı 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #fdf2f8, #f0abfc);
+      font-family: 'Nunito', sans-serif;
+      color: #6b21a8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.8rem;
+      color: #a21caf;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(to right, #ec4899, #8b5cf6);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #activity {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #7c3aed;
+      min-height: 30px;
+      transition: opacity 0.5s;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0;
+      text-align: left;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+    }
+
+    #result {
+      margin-top: 20px;
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    #countdown {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      color: #6b7280;
+    }
+
+    audio {
+      display: none;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      .card {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Salih Efe Fidan 💘</h1>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+    Tarayıcınız ses öğesini desteklemiyor.
+  </audio>
+
+  <!-- Date Etkinliği -->
+  <div class="card">
+    <p>Bugünkü romantik aktiviteniz ne olsun?</p>
+    <button onclick="startDate()">🎲 Aktiviteyi Keşfet</button>
+    <div id="activity"></div>
+  </div>
+
+  <!-- Randevu Planlama -->
+  <div class="card">
+    <h2>📅 Randevu Planla</h2>
+    <form id="dateForm">
+      <div class="form-group">
+        <label for="date">Tarih:</label>
+        <input type="date" id="date" required>
+      </div>
+      <div class="form-group">
+        <label for="time">Saat:</label>
+        <input type="time" id="time" required>
+      </div>
+      <div class="form-group">
+        <label for="note">Not (isteğe bağlı):</label>
+        <textarea id="note" rows="3" placeholder="Örn: Akşam mum ışığında yemek!"></textarea>
+      </div>
+      <button type="submit">💌 Randevuyu Kaydet</button>
+    </form>
+    <div id="result"></div>
+    <div id="countdown"></div>
+  </div>
+
+  <script>
+    const activities = [
+      "Piknik sepeti hazırlayıp parka gidin 🧺🌿",
+      "Birlikte makarna yapın ve şarap eşliğinde yiyin 🍝🍷",
+      "Ay ışığında sahilde yürüyüş yapın 🌕🏖️",
+      "Birlikte karaoke yapın ve kahkahaya boğulun 🎤😂",
+      "Kendi tatlınızı yapın: Waffle veya cheesecake! 🍓🍰",
+      "Romantik bir kahve dükkanında saatlerce sohbet edin ☕💬",
+      "Mum ışığında kitap okuyun 📖🕯️"
+    ];
+
+    function startDate() {
+      const random = Math.floor(Math.random() * activities.length);
+      const activityBox = document.getElementById("activity");
+      activityBox.style.opacity = 0;
+      setTimeout(() => {
+        activityBox.textContent = activities[random];
+        activityBox.style.opacity = 1;
+      }, 300);
+    }
+
+    function updateCountdown(targetDate) {
+      const countdownDiv = document.getElementById("countdown");
+
+      function tick() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          countdownDiv.textContent = "⏰ Randevu zamanı geldi!";
+          clearInterval(interval);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        countdownDiv.textContent = `⏳ Randevuya kalan süre: ${days}g ${hours}s ${minutes}d ${seconds}s`;
+      }
+
+      tick();
+      const interval = setInterval(tick, 1000);
+    }
+
+    document.getElementById("dateForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const note = document.getElementById("note").value.trim();
+
+      const fullDateTime = new Date(`${date}T${time}`);
+      if (isNaN(fullDateTime)) {
+        alert("Lütfen geçerli bir tarih ve saat girin.");
+        return;
+      }
+
+      let summary = `📌 Randevunuz ${date} tarihinde saat ${time}'de planlandı.`;
+      if (note) summary += ` Notunuz: "${note}"`;
+
+      document.getElementById("result").textContent = summary;
+      updateCountdown(fullDateTime);
+    });
+  </script>
+</body>
+</html>
